@@ -1,0 +1,35 @@
+# Secrets — never commit these
+.env
+*.env
+!*.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Node (if any JS projects land here)
+node_modules/
+.npm/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+
+# Logs
+*.log
+logs/
