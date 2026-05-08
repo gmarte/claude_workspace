@@ -1,0 +1,88 @@
+# Investor profile — Giancarlo Marte
+# This file is the source of truth. Never ask the user to re-explain these facts.
+# Update this file if any parameter changes.
+
+investor:
+  name: Giancarlo Marte
+  age: 43
+  email: giancarlo.marte@gmail.com
+
+tax:
+  residency: Dominican Republic
+  status: NRA  # Non-Resident Alien for US tax purposes
+  us_treaty: false  # No US–DR tax treaty
+  withholding_rates:
+    dividends: 0.30          # 30% — US equities, international ETFs
+    reit_distributions: 0.30 # 30% — VNQ and REIT-heavy ETFs
+    treasury_interest: 0.00  # 0% — portfolio interest exemption (SGOV, SHY, SCHP)
+    corporate_interest: 0.30 # 30% — VCIT distributions (review annually)
+    capital_gains: 0.00      # 0% — NRA exemption (not effectively connected income)
+  tax_year: calendar  # Jan–Dec
+  notes: |
+    Capital gains on US securities are exempt for NRAs not present in the US
+    for 183+ days in the tax year. Treasury interest qualifies for the
+    portfolio interest exemption under IRC §871(h). REIT distributions are
+    treated as ordinary dividends for withholding purposes (§897 FIRPTA may
+    apply to certain REIT dispositions — consult a tax advisor for sales).
+    PDBC may issue a K-1 (partnership) rather than a 1099 — verify with broker.
+
+platform:
+  broker: TradeStation US
+  account_type: Individual Equities Margin (taxable)
+  referral_code: Abacus  # Enables commission-free trading
+  fractional_shares: true  # Confirm per ETF in app
+  currency: USD
+
+risk_profile:
+  emotional_tolerance: low        # Behavioral — dislikes large drawdowns
+  financial_capacity: moderate    # Structural — 20+ year horizon absorbs volatility
+  combined_label: conservative-moderate
+  max_drawdown_comfort: -25%      # Soft threshold before emotional override risk
+  notes: |
+    Emotional tolerance is LOW — avoid recommending aggressive tactical tilts
+    even when financially justified. Frame all recommendations in terms of
+    long-term discipline, not short-term opportunity.
+
+investment_goals:
+  horizon_years: 20+
+  primary_goal: long-term capital accumulation leading to passive income
+  income_target_monthly: 10000  # USD/month at maturity
+  income_target_currency: USD
+  notes: |
+    At $10K/month goal, the portfolio needs ~$3M at a 4% withdrawal rate
+    ($120K/year ÷ 0.04 = $3M). Factor in 30% withholding on dividends
+    when modeling net income in retirement.
+
+contributions:
+  quarterly_amount: 3100  # USD — standard quarterly contribution
+  frequency: quarterly
+  typical_months: [1, 4, 7, 10]  # Jan, Apr, Jul, Oct (first week)
+  notes: |
+    Contributions may vary. User will specify the amount when triggering
+    the skill. Default to 3100 if not stated.
+
+crypto:
+  held_separately: true
+  in_scope: false
+  notes: Crypto portfolio is tracked separately. Never include in this analysis.
+
+constraints:
+  max_single_etf_pct: 25.0        # Hard ceiling per ETF position
+  max_sector_pct: 20.0            # GICS sector look-through limit
+  max_single_stock_indirect_pct: 5.0  # Indirect exposure via ETF holdings
+  min_international_equity_pct: 25.0  # VEA + VWO combined
+  max_reit_pct: 10.0              # Tax-drag management (30% withholding)
+  max_equity_pct: 70.0            # Total equity ceiling
+  min_fixed_income_pct: 20.0      # Stability floor
+  rebalancing_band_soft: 3.0      # Drift threshold to flag for review
+  rebalancing_band_hard: 5.0      # Drift threshold requiring action
+  rebalance_method: new_money     # Never sell to rebalance — only deploy new money
+
+preferences:
+  order_timing: first_30_min_session   # 9:30–10:00 ET for best ETF liquidity
+  default_order_type: limit
+  limit_buffer_pct: 0.05               # Place limit at ask + 0.05%
+  high_volatility_threshold_vix: 30    # Tranche contribution if VIX > 30
+  tranche_weeks: 4                     # Spread over N weeks when volatility is high
+  report_language: en                  # Primary report language
+  currency_display: USD

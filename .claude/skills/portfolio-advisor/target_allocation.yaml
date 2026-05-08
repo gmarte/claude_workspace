@@ -1,0 +1,253 @@
+# Investment Policy Statement — Target Allocations
+# Rebalancing bands: ±3% soft trigger, ±5% hard limit
+# Last reviewed: 2026-05-07
+# All percentages are of total portfolio value (including cash).
+
+# ─── CORE ETF TARGETS ───────────────────────────────────────────────────────
+
+holdings:
+
+  VTI:
+    name: Vanguard Total Stock Market ETF
+    target_pct: 25.0
+    asset_class: US Equity
+    geography: US
+    gics_sector_primary: Diversified (broad market)
+    dividend_yield_approx: 1.3
+    withholding_rate: 0.30
+    expense_ratio: 0.0003
+    tax_notes: Ordinary dividends withheld at 30%. Capital gains on sale at 0% (NRA).
+    # Approximate GICS look-through weights (update annually from Vanguard fact sheet)
+    gics_weights:
+      Technology: 0.30
+      Healthcare: 0.13
+      Financials: 0.13
+      Consumer_Discretionary: 0.11
+      Industrials: 0.09
+      Communication: 0.08
+      Consumer_Staples: 0.05
+      Energy: 0.04
+      Materials: 0.03
+      Utilities: 0.03
+      Real_Estate: 0.03
+    # Top holdings for indirect 5% exposure check (approximate, as of 2024)
+    top_holdings:
+      AAPL: 0.065
+      MSFT: 0.060
+      NVDA: 0.055
+      AMZN: 0.035
+      META: 0.025
+      GOOGL: 0.020
+      GOOG: 0.018
+      BRK_B: 0.017
+      LLY: 0.016
+      AVGO: 0.015
+
+  VEA:
+    name: Vanguard FTSE Developed Markets ETF
+    target_pct: 18.0
+    asset_class: International Equity
+    geography: Developed ex-US
+    gics_sector_primary: Diversified International
+    dividend_yield_approx: 3.0
+    withholding_rate: 0.30
+    expense_ratio: 0.0005
+    tax_notes: Dividends withheld at 30%. May include foreign tax credit complications.
+    gics_weights:
+      Financials: 0.20
+      Industrials: 0.15
+      Healthcare: 0.12
+      Consumer_Staples: 0.10
+      Consumer_Discretionary: 0.10
+      Technology: 0.09
+      Materials: 0.07
+      Communication: 0.06
+      Energy: 0.05
+      Utilities: 0.04
+      Real_Estate: 0.02
+    top_holdings:
+      Nestle: 0.018
+      ASML: 0.016
+      Novo_Nordisk: 0.015
+      LVMH: 0.013
+      SAP: 0.012
+      Shell: 0.012
+      Toyota: 0.011
+      Roche: 0.010
+      AstraZeneca: 0.010
+      Novartis: 0.009
+
+  VWO:
+    name: Vanguard FTSE Emerging Markets ETF
+    target_pct: 9.0
+    asset_class: Emerging Markets Equity
+    geography: Emerging Markets
+    gics_sector_primary: Diversified Emerging
+    dividend_yield_approx: 2.8
+    withholding_rate: 0.30
+    expense_ratio: 0.0008
+    tax_notes: Dividends withheld at 30%. Higher withholding complexity due to underlying country taxes.
+    gics_weights:
+      Technology: 0.25
+      Financials: 0.22
+      Consumer_Discretionary: 0.14
+      Communication: 0.11
+      Materials: 0.08
+      Energy: 0.07
+      Healthcare: 0.05
+      Industrials: 0.05
+      Consumer_Staples: 0.03
+    top_holdings:
+      Taiwan_Semi: 0.060
+      Tencent: 0.040
+      Samsung: 0.035
+      Alibaba: 0.025
+      Meituan: 0.018
+      Reliance: 0.015
+      Infosys: 0.013
+
+  SGOV:
+    name: iShares 0-3 Month Treasury Bond ETF
+    target_pct: 8.0
+    asset_class: Fixed Income — Government (Ultra-short)
+    geography: US
+    gics_sector_primary: Fixed Income
+    dividend_yield_approx: 5.2  # Tracks Fed Funds rate — update regularly
+    withholding_rate: 0.00
+    expense_ratio: 0.0009
+    tax_notes: Treasury interest is exempt from US withholding for NRAs under IRC §871(h) portfolio interest exemption.
+    gics_weights:
+      Fixed_Income: 1.00
+    top_holdings: {}
+
+  SHY:
+    name: iShares 1-3 Year Treasury Bond ETF
+    target_pct: 5.0
+    asset_class: Fixed Income — Government (Short-term)
+    geography: US
+    gics_sector_primary: Fixed Income
+    dividend_yield_approx: 4.5  # Tracks short end of yield curve
+    withholding_rate: 0.00
+    expense_ratio: 0.0015
+    tax_notes: Same portfolio interest exemption as SGOV. Zero withholding.
+    gics_weights:
+      Fixed_Income: 1.00
+    top_holdings: {}
+
+  VCIT:
+    name: Vanguard Intermediate-Term Corporate Bond ETF
+    target_pct: 10.0
+    asset_class: Fixed Income — Corporate (Intermediate)
+    geography: US
+    gics_sector_primary: Fixed Income
+    dividend_yield_approx: 4.8
+    withholding_rate: 0.30
+    expense_ratio: 0.0004
+    tax_notes: |
+      Corporate bond interest paid through an ETF to NRA is generally subject to
+      30% withholding. This erodes the effective yield significantly.
+      Net yield after withholding ≈ 4.8% × 0.70 = 3.36%.
+      Consider reducing weight vs. SGOV/SHY if bonds are overallocated.
+    gics_weights:
+      Fixed_Income: 1.00
+    top_holdings: {}
+
+  SCHP:
+    name: Schwab US TIPS ETF
+    target_pct: 8.0
+    asset_class: Fixed Income — Inflation-Protected
+    geography: US
+    gics_sector_primary: Fixed Income
+    dividend_yield_approx: 2.5  # Real yield + CPI adjustment
+    withholding_rate: 0.00
+    expense_ratio: 0.0003
+    tax_notes: |
+      TIPS interest qualifies for the portfolio interest exemption (Treasury securities).
+      Inflation adjustment component is also generally exempt from US withholding for NRAs.
+      Zero withholding — highly tax-efficient for this investor profile.
+    gics_weights:
+      Fixed_Income: 1.00
+    top_holdings: {}
+
+  VNQ:
+    name: Vanguard Real Estate ETF
+    target_pct: 7.0
+    asset_class: Real Estate
+    geography: US
+    gics_sector_primary: Real_Estate
+    dividend_yield_approx: 4.0
+    withholding_rate: 0.30
+    expense_ratio: 0.0012
+    tax_notes: |
+      REIT distributions are subject to 30% US withholding. No treaty relief for DR residents.
+      High dividend payout (REITs must distribute 90%+ of income) = significant withholding drag.
+      Annual withholding drag estimate: 4.0% yield × 30% = 1.2% annual drag.
+      Keep allocation capped at 7% target. Do NOT exceed 10% hard limit.
+    gics_weights:
+      Real_Estate: 1.00
+    top_holdings:
+      Prologis: 0.080
+      American_Tower: 0.065
+      Equinix: 0.055
+      Crown_Castle: 0.040
+      Simon_Property: 0.035
+
+  PDBC:
+    name: Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF
+    target_pct: 5.0
+    asset_class: Commodities
+    geography: Global
+    gics_sector_primary: Commodities
+    dividend_yield_approx: 0.0  # Minimal — structured as a C-corp for tax efficiency
+    withholding_rate: 0.00
+    expense_ratio: 0.0059
+    tax_notes: |
+      PDBC is structured as a C-corporation (not a partnership), so it does NOT
+      issue a K-1 — issues a 1099 instead. Minimal income distributions.
+      Returns come primarily from futures roll yield and collateral income.
+      NRA-friendly structure. Confirm annually that structure has not changed.
+    gics_weights:
+      Commodities: 1.00
+    top_holdings: {}
+
+  CASH:
+    name: Cash / Uninvested balance
+    target_pct: 5.0
+    asset_class: Cash
+    geography: US
+    gics_sector_primary: Cash
+    dividend_yield_approx: 0.0
+    withholding_rate: 0.00
+    expense_ratio: 0.00
+    tax_notes: Operating reserve. Held in TradeStation money market or sweep account.
+    gics_weights:
+      Cash: 1.00
+    top_holdings: {}
+
+# ─── VALIDATION CHECK ────────────────────────────────────────────────────────
+# Sum of all target_pct values must equal 100.0
+# VTI(25) + VEA(18) + VWO(9) + SGOV(8) + SHY(5) + VCIT(10) + SCHP(8) + VNQ(7) + PDBC(5) + CASH(5) = 100 ✅
+
+# ─── AGGREGATE TARGETS ───────────────────────────────────────────────────────
+# These are derived targets for compliance checks — do not edit manually.
+asset_class_targets:
+  equity_total: 52.0          # VTI + VEA + VWO (25+18+9)
+  fixed_income_total: 31.0    # SGOV + SHY + VCIT + SCHP (8+5+10+8)
+  real_estate_total: 7.0      # VNQ
+  commodities_total: 5.0      # PDBC
+  cash_total: 5.0             # CASH
+
+geographic_targets:
+  us_equity: 25.0             # VTI
+  developed_international: 18.0  # VEA
+  emerging_markets: 9.0       # VWO
+  us_bonds: 31.0              # SGOV+SHY+VCIT+SCHP
+  global_commodities: 5.0     # PDBC
+
+# ─── REBALANCING RULES ───────────────────────────────────────────────────────
+rebalancing:
+  method: new_money_only         # Never sell to rebalance
+  soft_band: 3.0                 # Flag for review
+  hard_band: 5.0                 # Requires action on next contribution
+  minimum_purchase_usd: 50.0     # Don't allocate less than $50 to any single ETF
+  review_frequency: quarterly
