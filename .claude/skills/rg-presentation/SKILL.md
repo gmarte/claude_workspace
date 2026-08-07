@@ -2,7 +2,7 @@
 name: rg-presentation
 description: |
   Monthly RG (Reuniones de Gerencia) presentation skill for Giancarlo's IT department.
-  Generates the audit team email and PowerPoint slide deck from a dashboard screenshot.
+  Generates the Sistema de Gestión indicators email and PowerPoint slide deck from a dashboard screenshot.
 
   TRIGGER when the user says any of:
   - "Let's work on my RG presentation"
@@ -13,7 +13,7 @@ description: |
   - User is only asking a question about past presentations
   - User is not providing a dashboard image
 
-version: 1.0.0
+version: 1.1.0
 ---
 
 # RG Presentation — Execution Guide
@@ -25,8 +25,8 @@ You are generating Giancarlo's monthly IT KPI deliverables for CaribeTrans board
 ## Non-negotiable rules
 
 1. **Reporting month is always last month.** If today is in May 2026, you are reporting April 2026 (04-2026).
-2. **% de Resolución = (Resueltos + Cerrados) / Total × 100**, rounded to nearest integer.
-3. **Días Promedio = Tiempo Promedio (hours) / 24**, rounded to 1 decimal.
+2. **% de Resolución = (Resueltos + Cerrados) / Total × 100** — 2 decimals in the email (e.g., 84.72%), nearest integer on the slides.
+3. **Días Promedio = Tiempo Promedio (hours) / 24** — 2 decimals in the email (e.g., 6.67), 1 decimal on the slides.
 4. **Never invent KPI numbers** — read everything from the provided dashboard image.
 5. **Always create the output folder** if it does not exist before running the script.
 
@@ -87,26 +87,44 @@ Read the following from the screenshot the user provided. Look in the **lower KP
 
 **Calculate:**
 ```python
-pct_resolucion = round((resueltos + cerrados) / total_tickets * 100)
-dias_promedio  = round(tiempo_horas / 24, 1)
+# Email values — always formatted with exactly 2 decimals (f"{x:.2f}")
+pct_resolucion_email = (resueltos + cerrados) / total_tickets * 100   # e.g., 84.72
+dias_promedio_email  = tiempo_horas / 24                              # e.g., 6.67
+
+# Slide values (slide 2 KPI cards)
+pct_resolucion = round((resueltos + cerrados) / total_tickets * 100)  # integer
+dias_promedio  = round(tiempo_horas / 24, 1)                          # 1 decimal
 ```
 
 State the extracted values clearly before proceeding:
-> Extracted: total=50, resueltos=1, cerrados=38, abiertos=11, tiempo=105h → % resolución=78%, días=4.4
+> Extracted: total=50, resueltos=1, cerrados=38, abiertos=11, tiempo=105h → email: 78.00% / 4.38 días — slides: 78% / 4.4 días
 
-### Step 4 — Output the audit email
+### Step 4 — Output the email for the Sistema de Gestión team
 
-Print this block to the user:
+Print this block to the user (recipient: equipo de Sistema de Gestión). Both numbers use exactly 2 decimals; the third line is always the literal text "ver adjunto":
 
 ```
-━━━ EMAIL PARA AUDITORÍA ━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━ EMAIL PARA SISTEMA DE GESTIÓN ━━━━━━━━━━━━━━━━━
 Asunto: Indicadores {report_month_num:02d}-{report_year}
 
-% de Resolución de Tickets: {pct_resolucion}%
-Promedio de Días de Resolución: {dias_promedio}
+% de Resolución de Tickets: {pct_resolucion_email:.2f}%
+Promedio de Días de Resolución: {dias_promedio_email:.2f}
+% de Avance de Proyectos: ver adjunto
 
 Saludos,
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Example:
+
+```
+Asunto: Indicadores 02-2025
+
+% de Resolución de Tickets: 84.72%
+Promedio de Días de Resolución: 6.67
+% de Avance de Proyectos: ver adjunto
+
+Saludos,
 ```
 
 ### Step 5 — Locate reference PPTX
@@ -182,6 +200,7 @@ If the AFTER output still shows any old value, run again with the corrected --fi
 
 Report:
 - Email is ready to copy above
+- Reminder: attach the "% de Avance de Proyectos" file to the email (the email body only says "ver adjunto")
 - PPTX saved to: `{output_path}`
 - Which values were updated on slides 1 and 2
 - Reminder: *"The remaining slides are copied from last month — add your content when ready."*
