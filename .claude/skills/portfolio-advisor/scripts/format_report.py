@@ -192,7 +192,7 @@ def section_d(result: dict, targets: dict) -> str:
     ]
     for a in allocs:
         lines.append(
-            f"  {a['ticker']:<7} ${a['amount_usd']:>9,.2f} {a['shares_approx']:>9.4f} "
+            f"  {a['ticker']:<7} ${a['amount_usd']:>9,.2f} {a['shares_approx']:>9g} "
             f"${a['current_price']:>7.2f} {a['current_pct']:>6.1f}% {a['target_pct']:>5.1f}% "
             f"{a['drift']:>+6.1f}%"
         )
@@ -228,11 +228,13 @@ def section_e(result: dict) -> str:
         if a["shares_approx"] > 0 and a["current_price"] > 0:
             limit_price = round(a["current_price"] * 1.0005, 2)
             lines.append(
-                f"  {i:>2}. BUY  {a['ticker']:<5}  {a['shares_approx']:.4f} shares  "
+                f"  {i:>2}. BUY  {a['ticker']:<5}  {a['shares_approx']:g} shares  "
                 f"LIMIT ${limit_price:.2f}   (~${a['amount_usd']:,.0f})"
             )
     lines += ["", f"  Total to deploy: ${result['total_allocated']:,.2f}"]
-    lines.append("  Note: verify fractional share availability on TradeStation before submitting.")
+    if result.get("leftover_cash"):
+        lines.append(f"  Cash remainder (whole-share rounding): ${result['leftover_cash']:,.2f}")
+    lines.append("  Note: WHOLE shares only — TradeStation rejects fractional/decimal quantities.")
     return "\n".join(lines)
 
 

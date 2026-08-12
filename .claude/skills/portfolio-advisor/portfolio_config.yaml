@@ -30,7 +30,7 @@ platform:
   broker: TradeStation US
   account_type: Individual Equities Margin (taxable)
   referral_code: Abacus  # Enables commission-free trading
-  fractional_shares: true  # Confirm per ETF in app
+  fractional_shares: false  # TradeStation REJECTS fractional/decimal quantities — WHOLE shares only (confirmed by Giancarlo 2026-08-12)
   currency: USD
 
 risk_profile:
