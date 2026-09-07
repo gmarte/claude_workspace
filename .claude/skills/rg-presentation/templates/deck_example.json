@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "unit": "Unidad de Sistemas",
+    "period_label": "Julio 2026",
+    "meeting_date": "25/08/2026",
+    "footer": "Unidad de Sistemas  •  Reporte Gerencial  •  Julio 2026",
+    "draft": false,
+    "author": "Giancarlo Marte",
+    "role": "Gerente de Sistemas  •  Caribetrans, SAS"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "title": "Unidad de Sistemas",
+      "subtitle": "Reporte Gerencial  •  Julio 2026",
+      "date": "25/08/2026",
+      "presenter": "Giancarlo Marte  •  Gerente de Sistemas"
+    },
+    {
+      "type": "kpi",
+      "title": "Indicadores de Soporte",
+      "subtitle": "Gestión de tickets  •  Julio 2026",
+      "cards": [
+        {"label": "Tickets totales", "value": "35", "note": "Período julio 2026"},
+        {"label": "Tickets cerrados", "value": "35", "note": "100% del total"},
+        {"label": "Tickets abiertos", "value": "0", "note": "0% del total"},
+        {"label": "% Resolución", "value": "100%", "note": "Cerrados + resueltos"},
+        {"label": "Tiempo promedio de resolución", "value": "3.0 días", "note": "▲ vs. 1.7 días junio", "note_color": "red"}
+      ],
+      "chart": {
+        "title": "Distribución por departamento",
+        "subtitle": "Top 7 — representa el 78% del volumen",
+        "kind": "bar",
+        "categories": ["Cobros", "Op. Logísticas", "Sistemas", "IT Soporte", "Sin Departamento", "Ventas 1", "Finanzas"],
+        "series": [{"name": "Tickets", "values": [7, 7, 5, 4, 2, 2, 2], "role": "current"}]
+      },
+      "bullets_title": "Lectura ejecutiva",
+      "bullets": [
+        "Alta cobertura resolutiva (100%) mantiene la operación estable.",
+        "Volumen concentrado en Cobros, Op. Logísticas y Sistemas (51%).",
+        "Tiempo promedio sube a 3.0 días por tickets de integración SAP."
+      ]
+    },
+    {
+      "type": "section",
+      "kicker": "01  •  Portafolio",
+      "title": "Seguimiento de Proyectos",
+      "subtitle": "Estado al cierre de julio 2026"
+    },
+    {
+      "type": "table",
+      "title": "Portafolio de Proyectos — Visión General",
+      "subtitle": "Movimientos del mes  •  Julio 2026",
+      "cards": [
+        {"label": "Proyectos activos", "value": "37", "note": "Portafolio en ejecución y planificación", "value_size": 28},
+        {"label": "Culminados en julio", "value": "2", "note": "JAS Connect  ·  Matriz de Riesgo", "value_size": 28},
+        {"label": "En cierre (≥ 90%)", "value": "6", "note": "Listos o próximos a producción", "value_size": 28},
+        {"label": "Pase a PRD", "value": "01-SEP", "note": "Suite Compras ↔ SAP (3 módulos)", "value_size": 28}
+      ],
+      "columns": [
+        {"header": "Proyecto", "width": 6.0, "bold": true},
+        {"header": "Área", "width": 2.0},
+        {"header": "Avance", "width": 2.6, "kind": "progress"},
+        {"header": "Estado", "width": 1.8, "kind": "status"}
+      ],
+      "rows": [
+        ["Integración JAS Connect — CargoWise ↔ JAS (agente global)", "Forwarding", 100, "Culminado"],
+        ["Matriz de Riesgo (observación auditoría BASC)", "Administración", 100, "Culminado"],
+        ["Módulo de Visitas Domiciliarias — Intranet", "Administración", 95, "En progreso"],
+        ["Suite Compras ↔ SAP — OC · Activo Fijo · Liberación autom.", "Administración", 90, "En progreso"],
+        ["Sistema de Turnos — trazabilidad de clientes en sitio", "Op. Logísticas", 90, "En progreso"],
+        ["Niveles de aprobación (Compras · Reembolsos)", "Administración", 60, "En progreso"],
+        ["Dashboard Comercial (CRM) — Power BI", "Comercial", 55, "Desviado"],
+        ["Reembolsos Fase 2 — integración contable con SAP", "Administración", 40, "En progreso"]
+      ]
+    },
+    {
+      "type": "bullets",
+      "title": "Integración JAS Connect",
+      "subtitle": "CargoWise ↔ plataforma de integración de JAS (agente global)",
+      "badge": "100%  ·  Producción",
+      "lead": "Canal B2B directo con el agente global: menor dependencia de terceros y operación estable desde julio.",
+      "bullets": [
+        "Canal B2B directo con la plataforma del agente global JAS.",
+        "Sustituye el middleware intermedio en el intercambio de datos.",
+        "Pruebas completadas; operación estable en producción desde julio."
+      ],
+      "image": "RG/2025/8. Agosto/dashboard comercial 1.png",
+      "image_caption": "Ejemplo de captura — reemplazar por evidencia del proyecto.",
+      "impact_label": "Impacto",
+      "impact": "Continuidad del negocio de Freight Forwarding."
+    },
+    {
+      "type": "two_column",
+      "title": "Noticias del mes",
+      "subtitle": "Julio 2026, al 31/07/2026",
+      "left": {
+        "header": "Puntos Bajos (Desafíos)",
+        "items": [
+          "Dashboard Comercial desviado (55%): dependencia de validación con Comercial.",
+          "Tiempo promedio de resolución sube a 3.0 días."
+        ]
+      },
+      "right": {
+        "header": "Puntos Altos (Logros)",
+        "items": [
+          "2 proyectos culminados y en producción.",
+          "100% de resolución de tickets en el mes.",
+          "Suite Compras ↔ SAP lista para pase a PRD el 01-SEP."
+        ]
+      }
+    },
+    {
+      "type": "chart",
+      "title": "Tickets de Soporte",
+      "subtitle": "Volumen mensual | por unidades — Al 31/07/2026",
+      "tag": "M",
+      "kind": "column",
+      "categories": ["Abr", "May", "Jun", "Jul"],
+      "series": [
+        {"name": "Presupuesto 2026", "values": [40, 40, 40, 40], "role": "budget"},
+        {"name": "Logrado 2026", "values": [42, 38, 44, 35], "role": "current"},
+        {"name": "Logrado 2025", "values": [50, 47, 52, 41], "role": "prev"},
+        {"name": "Logrado 2024", "values": [55, 49, 58, 46], "role": "prev2"}
+      ],
+      "callouts": [
+        {"value": "-6", "text": "vs. 2025", "color": "green"},
+        {"value": "-13%", "text": "vs. presupuesto", "color": "red"}
+      ],
+      "note": "Ejemplo de gráfico comparativo con la paleta corporativa (Presupuesto · 2026 · 2025 · 2024)."
+    },
+    {
+      "type": "image",
+      "title": "BI Comercial — Tablero Ciclo Comercial (CRM)",
+      "subtitle": "Página “Oportunidades” — Power BI, datos al 21/08/2026",
+      "image": "RG/2025/8. Agosto/dashboard comercial 1.png",
+      "image_caption": "Captura del tablero en Power BI.",
+      "bullets": [
+        "Páginas de Actividad Comercial y Oportunidades ya operativas.",
+        "En validación con la Gerencia Comercial; avance 55%."
+      ]
+    },
+    {
+      "type": "closing",
+      "title": "Gracias",
+      "subtitle": "Por su atención"
+    }
+  ]
+}
