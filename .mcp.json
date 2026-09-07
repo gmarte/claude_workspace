@@ -1,0 +1,18 @@
+{
+    "mcpServers": {
+        "sap-ecc-dev": {
+            "command": "node",
+            "args": [
+                "--env-file=C:/TEMP/Tools/mcp-abap-adt/.env",
+                "C:/TEMP/Tools/mcp-abap-adt/dist/index.js"
+            ]
+        },
+        "obsidian": {
+            "type": "http",
+            "url": "https://127.0.0.1:27124/mcp/",
+            "headers": {
+                "Authorization": "Bearer ${OBSIDIAN_TOKEN}"
+            }
+        }
+    }
+}
