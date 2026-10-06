@@ -35,3 +35,6 @@ desktop.ini
 logs/
 
 RG/
+RGIT
+# media-gen skill: worker outputs (final files are copied to their destination)
+media/out/

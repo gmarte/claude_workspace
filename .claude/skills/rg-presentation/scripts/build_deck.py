@@ -650,11 +650,29 @@ def render(pptx_path, out_dir=None):
     cmd = ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", RENDER_PS1,
            "-Pptx", os.path.abspath(pptx_path), "-OutDir", out_dir]
     res = subprocess.run(cmd, capture_output=True, text=True)
-    if res.returncode != 0:
-        print("Render failed:\n" + res.stderr, file=sys.stderr)
-        return None
+    pngs = sorted(f for f in os.listdir(out_dir) if f.endswith(".png")) if os.path.isdir(out_dir) else []
+    if res.returncode != 0 or not pngs:
+        # PowerShell may run in Constrained Language mode (COM blocked) -> fall back to pywin32.
+        try:
+            import win32com.client  # pip install pywin32
+        except ImportError:
+            print("Render failed (PowerShell) and pywin32 not installed:\n" + res.stderr, file=sys.stderr)
+            return None
+        os.makedirs(out_dir, exist_ok=True)
+        app = win32com.client.Dispatch("PowerPoint.Application")
+        pres = app.Presentations.Open(os.path.abspath(pptx_path), 1, 0, 0)
+        try:
+            h = int(1280 * pres.PageSetup.SlideHeight / pres.PageSetup.SlideWidth)
+            for i, s in enumerate(pres.Slides, 1):
+                s.Export(os.path.join(out_dir, f"slide{i:02d}.png"), "PNG", 1280, h)
+        finally:
+            pres.Close()
+            if app.Presentations.Count == 0:
+                app.Quit()
+        pngs = sorted(f for f in os.listdir(out_dir) if f.endswith(".png"))
     print(f"\nPreview PNGs ({out_dir}):")
-    print(res.stdout.strip())
+    for f in pngs:
+        print(os.path.join(out_dir, f))
     return out_dir
 
 
