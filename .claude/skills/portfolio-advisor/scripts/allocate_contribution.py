@@ -104,30 +104,59 @@ def compute_allocation(positions: list[dict], targets: dict, contribution: float
             "allocations": {},
         }
 
-    # Weight allocations proportional to gap, capped at actual gap
-    total_gap = sum(gaps.values())
-    raw_allocations = {
-        ticker: min(gap, contribution * (gap / total_gap))
-        for ticker, gap in gaps.items()
-    }
+    fractional_ok = config.get("platform", {}).get("fractional_shares", True)
 
-    # Remove positions below minimum purchase threshold
-    filtered = {t: v for t, v in raw_allocations.items() if v >= min_purchase}
-    if not filtered:
-        # Everything is tiny — just put it in the most underweight position
-        most_underweight = max(gaps, key=gaps.get)
-        filtered = {most_underweight: contribution}
+    if not fractional_ok:
+        # Whole-share mode — TradeStation rejects fractional/decimal quantities.
+        # Greedily buy 1 share at a time of the ticker whose remaining gap covers
+        # the largest fraction of its price; stop below 60% coverage so a single
+        # share can never overshoot its target by more than ~40% of its price.
+        # The unspent remainder stays in cash (total deployed <= contribution).
+        remaining = contribution
+        residual_gap = dict(gaps)
+        share_counts = {t: 0 for t in gaps}
+        while True:
+            candidates = [
+                t for t in gaps
+                if 0 < current_prices.get(t, 0.0) <= remaining
+                and residual_gap[t] / current_prices[t] >= 0.6
+            ]
+            if not candidates:
+                break
+            pick = max(candidates, key=lambda t: residual_gap[t] / current_prices[t])
+            share_counts[pick] += 1
+            residual_gap[pick] -= current_prices[pick]
+            remaining -= current_prices[pick]
+        rounded = {
+            t: round(n * current_prices[t], 2)
+            for t, n in share_counts.items()
+            if n > 0 and n * current_prices[t] >= min_purchase
+        }
+    else:
+        # Weight allocations proportional to gap, capped at actual gap
+        total_gap = sum(gaps.values())
+        raw_allocations = {
+            ticker: min(gap, contribution * (gap / total_gap))
+            for ticker, gap in gaps.items()
+        }
 
-    # Renormalize to sum to contribution
-    total_raw = sum(filtered.values())
-    normalized = {t: (v / total_raw) * contribution for t, v in filtered.items()}
+        # Remove positions below minimum purchase threshold
+        filtered = {t: v for t, v in raw_allocations.items() if v >= min_purchase}
+        if not filtered:
+            # Everything is tiny — just put it in the most underweight position
+            most_underweight = max(gaps, key=gaps.get)
+            filtered = {most_underweight: contribution}
 
-    # Round to cents; fix rounding residual on largest allocation
-    rounded = {t: round(v, 2) for t, v in normalized.items()}
-    residual = round(contribution - sum(rounded.values()), 2)
-    if residual != 0 and rounded:
-        largest = max(rounded, key=rounded.get)
-        rounded[largest] = round(rounded[largest] + residual, 2)
+        # Renormalize to sum to contribution
+        total_raw = sum(filtered.values())
+        normalized = {t: (v / total_raw) * contribution for t, v in filtered.items()}
+
+        # Round to cents; fix rounding residual on largest allocation
+        rounded = {t: round(v, 2) for t, v in normalized.items()}
+        residual = round(contribution - sum(rounded.values()), 2)
+        if residual != 0 and rounded:
+            largest = max(rounded, key=rounded.get)
+            rounded[largest] = round(rounded[largest] + residual, 2)
 
     # Build output rows with share estimates
     allocations = []
@@ -158,6 +187,7 @@ def compute_allocation(positions: list[dict], targets: dict, contribution: float
         "contribution":    contribution,
         "new_total":       new_total,
         "total_allocated": sum(rounded.values()),
+        "leftover_cash":   round(contribution - sum(rounded.values()), 2),
         "allocations":     allocations,
     }
 
@@ -203,12 +233,14 @@ def print_report(result: dict, targets: dict):
     print(f"  {'─'*7} {'─'*10} {'─'*9} {'─'*8} {'─'*7} {'─'*6} {'─'*7}")
     for a in allocs:
         print(
-            f"  {a['ticker']:<7} ${a['amount_usd']:>9,.2f} {a['shares_approx']:>9.4f} "
+            f"  {a['ticker']:<7} ${a['amount_usd']:>9,.2f} {a['shares_approx']:>9g} "
             f"${a['current_price']:>7.2f} {a['current_pct']:>6.1f}% {a['target_pct']:>5.1f}% "
             f"{a['drift']:>+6.1f}%"
         )
     print(f"  {'─'*7} {'─'*10}")
     print(f"  {'TOTAL':<7} ${total_alloc:>9,.2f}")
+    if result.get("leftover_cash"):
+        print(f"  Unallocated cash remainder (whole-share rounding): ${result['leftover_cash']:,.2f}")
 
     print(f"\n{'─'*62}")
     print(f"  ORDER LIST — ready for TradeStation")
@@ -218,7 +250,7 @@ def print_report(result: dict, targets: dict):
         if a["shares_approx"] > 0 and a["current_price"] > 0:
             limit_price = round(a["current_price"] * 1.0005, 2)
             print(
-                f"  {i}. BUY {a['ticker']:<5} {a['shares_approx']:.4f} shares  "
+                f"  {i}. BUY {a['ticker']:<5} {a['shares_approx']:g} shares  "
                 f"LIMIT ${limit_price:.2f}   (~${a['amount_usd']:,.0f})"
             )
 

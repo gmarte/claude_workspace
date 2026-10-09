@@ -120,8 +120,11 @@ for each ticker:
   gap = ideal_value - current_value
 
 # Allocate only to positions where gap > 0 (never sell)
-# Weight allocation proportional to gap size
-# Round to nearest $1; ensure sum == contribution exactly
+# WHOLE SHARES ONLY — TradeStation rejects fractional/decimal quantities
+# (confirmed 2026-08-12; see platform.fractional_shares in portfolio_config.yaml):
+#   greedily buy 1 share at a time of the ticker whose remaining gap covers the
+#   largest fraction of its price; stop when coverage < 60% or budget exhausted.
+#   The unspent remainder stays in cash — total deployed will be ≤ contribution.
 ```
 
 ### Step 6 — Assemble and deliver the final report
@@ -222,12 +225,13 @@ Tax note: [Flag withholding implications for this specific allocation]
 Timing: Place during 9:30–10:00 ET for best ETF liquidity.
 Order type: LIMIT at ask + $0.01 (or 0.05% buffer in high-volatility sessions).
 
-  1. BUY  [TICKER]  [X.XX] shares  LIMIT $[PRICE]   (~$[VALUE])
-  2. BUY  [TICKER]  [X.XX] shares  LIMIT $[PRICE]   (~$[VALUE])
+  1. BUY  [TICKER]  [N] shares  LIMIT $[PRICE]   (~$[VALUE])
+  2. BUY  [TICKER]  [N] shares  LIMIT $[PRICE]   (~$[VALUE])
   ...
 
-Total to deploy: $[AMOUNT]
-TradeStation note: confirm fractional share availability before placing.
+Total to deploy: $[AMOUNT]  |  Cash remainder: $[LEFTOVER]
+TradeStation note: WHOLE shares only — the platform rejects fractional/decimal
+quantities. Never output decimal share counts in the order list.
 
 
 ━━━ F. RISK FLAGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
